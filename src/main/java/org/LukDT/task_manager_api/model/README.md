@@ -1,0 +1,1 @@
+# JPA сущности (User, Project, Task, Comment)
