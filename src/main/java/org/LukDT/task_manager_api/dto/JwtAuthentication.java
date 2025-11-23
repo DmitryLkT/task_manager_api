@@ -7,7 +7,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "Ответ с токеном доступа")
-public class JwtAuthenticationResponse {
+public class JwtAuthentication {
   @Schema(description = "Токен", example = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTYyMjUwNj...")
   private String token;
+  private String refreshToken;
 }

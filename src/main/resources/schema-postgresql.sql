@@ -9,6 +9,7 @@ CREATE TABLE users (
 CREATE TABLE roles (
     id SERIAL PRIMARY KEY,
     name VARCHAR(50) NOT NULL UNIQUE
+                    CHECK (name IN ('ROLE_USER', 'ROLE_ADMIN'))
 );
 
 CREATE TABLE user_role (
