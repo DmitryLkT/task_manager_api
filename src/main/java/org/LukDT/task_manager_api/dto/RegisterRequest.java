@@ -1,11 +1,15 @@
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Schema(description = "Запрос на регистрацию")
-public class SignUpRequest {
+public class RegisterRequest {
   @Size(min=2, max=50, message="Имя пользователя может содержать от 2 до 50 символов")
   @Schema(description = "Имя пользователя", example="Dmity")
   @NotBlank(message = "Не может быть пустым")

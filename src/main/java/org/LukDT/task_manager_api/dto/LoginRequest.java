@@ -1,10 +1,13 @@
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Schema(description = "Запрос на аутентификацию")
-public class SignInRequest {
+public class LoginRequest {
   @Size(min=10, max=250, message = "Email пользователя должен быть от 10 до 250 символов")
   @Email(message = "Email адрес должен быть в формате user@example.com")
   @Schema(description = "Адрес электронной почты", example = "dmitry@gmail.com")
