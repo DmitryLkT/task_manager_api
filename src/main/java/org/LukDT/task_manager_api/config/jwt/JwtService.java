@@ -42,7 +42,7 @@ public class JwtService {
 
     return Jwts.builder()
               .setClaims(claims)
-              .setSubject(userDetails.getEmail())
+              .setSubject(userDetails.getUsername())
               .setIssuedAt(new Date())
               .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
               .signWith(getSingInKey())
@@ -52,7 +52,7 @@ public class JwtService {
   //генерирует refresh-токен
   public String generateRefreshToken(UserDetails userDetails) {
     return Jwts.builder()
-              .setSubject(userDetails.getEmail())
+              .setSubject(userDetails.getUsername())
               .setIssuedAt(new Date())
               .setExpiration(new Date(System.currentTimeMillis() + refreshExpiration))
               .signWith(getSingInKey())
@@ -96,7 +96,7 @@ public class JwtService {
   }
 
   //Извлекаем Email из токена
-  private String extractEmail(String token) {
+  public String extractEmail(String token) {
     return Jwts.parserBuilder()
             .getSinginKey(getSingInKey())
             .build()
