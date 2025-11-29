@@ -65,8 +65,8 @@ public class JwtService {
       throw new RuntimeException("Invalid or expired refresh token");
     }
 
-    String username = extractUsername(refreshToken);
-    UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+    String email = extractEmail(refreshToken);
+    UserDetails userDetails = userDetailsService.loadUserByUsername(email);
 
     String newAccessToken = generateToken(userDetails);
     String newRefreshToken = generateRefreshToken(userDetails);
@@ -76,7 +76,7 @@ public class JwtService {
 
   //Создает корректный ключ
   private SecretKey getSingInKey() {
-    bute[] keyBytes = Decoders.BASE64.decoder(jwtSecretKey);
+    byte[] keyBytes = Decoders.BASE64.decode(jwtSecretKey);
     return Keys.hmacShaKeyFor(keyBytes);
   }
 
@@ -95,8 +95,13 @@ public class JwtService {
     }
   }
 
-  //Извлекаем Username из токена
-  private String extractUsername(String token) {
-    return extractClaim(token, Claims::getSubject);
+  //Извлекаем Email из токена
+  private String extractEmail(String token) {
+    return Jwts.parserBuilder()
+            .getSinginKey(getSingInKey())
+            .build()
+            .parseSignedClaims(token)
+            .getBody()
+            .getSubject();
   }
 }
