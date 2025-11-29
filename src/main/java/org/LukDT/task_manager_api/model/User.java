@@ -23,7 +23,7 @@ import lombok.Setter;
 @Getter
 @NoArgsConstructor
 @Table(name="user")
-public class User implements UserDetails {
+public class User {
   @Id
   @Column(name="id")
   @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -63,36 +63,4 @@ public class User implements UserDetails {
     this.roles.remove(role);
     role.getUser().remove(this);
   }
-
-  //Возвращает предоставленные пользователю полномочия.
-  @Override
-  public Collection<? extends GrantedAuthority> getAuthorities() {
-    return roles.stream()
-              .map(role -> new SimpleGrantedAuthority(role.getName()))
-              .toList();
-  }
-
-  //Указывает, истёк ли аккаунт пользователя.
-  @Override
-  public boolean isAccountNonExpired() {
-    return true;
-  }
-
-  //Указывает, заблокирован ли пользователь или разблокирован.
-  @Override
-  public boolean isAccountNonLocked() {
-    return true;
-  }
-
-  //Указывает, истёк ли срок действия учетных данных пользователя (пароль).
-  @Override
-  public boolean isCredentialsNonExpired() {
-    return true;
-  }
-
-  //Указывает, включён ли пользователь или отключён.
-  @Override
-    public boolean isEnabled() {
-        return true;
-    }
 }
