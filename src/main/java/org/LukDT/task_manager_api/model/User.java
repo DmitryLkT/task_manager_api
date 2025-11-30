@@ -45,7 +45,7 @@ public class User {
     joinColumns=@JoinColumn(name="roles_id"),
     inverseJoinColumns=@JoinColumn(name="user_id") 
   )
-  private List<Role> roles;
+  private Set<Role> roles;
 
   public User(String name, String email, String password) {
     this.name = name;

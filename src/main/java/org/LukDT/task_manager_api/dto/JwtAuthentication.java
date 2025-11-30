@@ -13,5 +13,7 @@ public class JwtAuthentication {
 
   @Schema(description = "Обновленный токен")
   private String refreshToken;
+
+  @Schema(description = "Данные пользователя")
   private UserResponse userResponse;
 }
