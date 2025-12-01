@@ -24,7 +24,7 @@ public class SecurityConfig {
       .csrf().disable()
       .cors(cors -> {})
       .authorizeHttpRequests(auth -> auth
-        .requestMatchers("/", "/login", "/registration", "/error").permitAll()
+        .requestMatchers("/auth/**").permitAll()
         .requestMatchers("/swagger-ui/**", "/swagger-resources/**", "/v3-api-docs/**").permitAll()
         .requestMatchers("/admin/**").hasRole("ADMIN")
         .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")

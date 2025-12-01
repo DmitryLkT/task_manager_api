@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -24,6 +25,7 @@ public class UserServiceImpl implements UserService {
   private final JwtService jwtService;
   
   @Override
+  @Transactional
   public UserResponse register(RegisterRequest request) {
     if(userRepository.existsByEmail(request.getEmail())) {
       throw new RuntimeException("Email already exists");
@@ -31,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
     User user = new User();
     user.setName(request.getName());
-    user.setEmail(request.getEmail);
+    user.setEmail(request.getEmail());
     user.setPassword(passwordEncoder.encode(request.getPassword()));
 
     Role role = roleRepository.findByName("ROLE_USER")
@@ -44,6 +46,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @Transactional
   public JwtAuthentication login(LoginRequest request) {
     User user = userRepository.findByEmail(request.getEmail())
                  .orElseThrow(() -> new RuntimeException("User not found"));
@@ -60,6 +63,7 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
+  @Transactional
   public UserResponse getCurrentUser() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 
