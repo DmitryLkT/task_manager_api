@@ -1,13 +1,14 @@
 import java.util.List;
+import java.util.Collection;
 
-import org.apache.catalina.User;
+import org.LukDT.task_manager_api.model.User;
+import org.LukDT.task_manager_api.model.Role;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import lombok.AllArgsConstructor;
-
-@AllArgsConstructor
-public class CustomUserDetails implements UserDetails {
-  private final User user;
+public record CustomUserDetails(User user) implements UserDetails {
 
   //Возвращает предоставленные пользователю полномочия.
   @Override

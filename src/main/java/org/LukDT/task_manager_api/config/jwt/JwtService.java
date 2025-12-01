@@ -1,21 +1,30 @@
+import org.LukDT.task_manager_api.model.User;
+import org.LukDT.task_manager_api.model.Role;
+import org.LukDT.task_manager_api.dto.JwtAuthentication;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.crypto.SecretKey;
 
-import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class JwtService {
   @Value("${JWT_SECRET_KEY}")
   private String jwtSecretKey;
@@ -25,6 +34,8 @@ public class JwtService {
   
   @Value("${jwt.refresh-expiration}")
   private Long refreshExpiration;
+
+  private final UserDetailsService userDetailsService;
 
   //генерирует access-токен
   public String generateToken(UserDetails userDetails) {
@@ -45,7 +56,7 @@ public class JwtService {
               .setSubject(userDetails.getUsername())
               .setIssuedAt(new Date())
               .setExpiration(new Date(System.currentTimeMillis() + jwtExpiration))
-              .signWith(getSingInKey())
+              .signWith(getSignInKey())
               .compact();
   }
 
@@ -55,7 +66,7 @@ public class JwtService {
               .setSubject(userDetails.getUsername())
               .setIssuedAt(new Date())
               .setExpiration(new Date(System.currentTimeMillis() + refreshExpiration))
-              .signWith(getSingInKey())
+              .signWith(getSignInKey())
               .compact();
   }
 
@@ -75,7 +86,7 @@ public class JwtService {
   }
 
   //Создает корректный ключ
-  private SecretKey getSingInKey() {
+  private SecretKey getSignInKey() {
     byte[] keyBytes = Decoders.BASE64.decode(jwtSecretKey);
     return Keys.hmacShaKeyFor(keyBytes);
   }
@@ -83,12 +94,13 @@ public class JwtService {
   //Проверяет валидность токена
   public boolean isTokenValid(String token) {
     try {
-      Jwts.parserBuilder()
-        .setSigningKey(getSingInKey())
+      Claims claims = Jwts.parserBuilder()
+        .setSigningKey(getSignInKey())
         .build()
-        .parseClaimsJws(token);
+        .parseClaimsJws(token)
+        .getBody();
       
-      Date expiration = extractExpiration(token); //
+      Date expiration = claims.getExpiration();
       return expiration.after(new Date());  
     } catch(JwtException | IllegalArgumentException e) {
       return false;
@@ -98,10 +110,9 @@ public class JwtService {
   //Извлекаем Email из токена
   public String extractEmail(String token) {
     return Jwts.parserBuilder()
-            .getSinginKey(getSingInKey())
+            .setSigningKey(getSignInKey())
             .build()
-            .parseSignedClaims(token)
-            .getBody()
-            .getSubject();
+            .parseClaimsJws(token)
+            .getBody();
   }
 }
