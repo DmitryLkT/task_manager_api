@@ -1,7 +1,11 @@
 import org.LukDT.task_manager_api.service.UserService;
-import org.LukDT.task_manager_api.dto;
+import org.LukDT.task_manager_api.dto.RegisterRequest;
+import org.LukDT.task_manager_api.dto.LoginRequest;
+import org.LukDT.task_manager_api.dto.UserResponse;
+import org.LukDT.task_manager_api.dto.JwtAuthentication;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
