@@ -1,4 +1,4 @@
-package org.LukDT.task_manager_api.dto;
+package org.luk.task_manager_api.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 

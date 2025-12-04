@@ -1,4 +1,4 @@
-package org.LukDT.task_manager_api;
+package org.luk.task_manager_api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

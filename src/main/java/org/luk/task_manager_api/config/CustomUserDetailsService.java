@@ -1,7 +1,7 @@
-package org.LukDT.task_manager_api.config; 
+package org.luk.task_manager_api.config; 
 
-import org.LukDT.task_manager_api.model.User;
-import org.LukDT.task_manager_api.repository.UserRepository;
+import org.luk.task_manager_api.model.User;
+import org.luk.task_manager_api.repository.UserRepository;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.userdetails.UserDetailsService;

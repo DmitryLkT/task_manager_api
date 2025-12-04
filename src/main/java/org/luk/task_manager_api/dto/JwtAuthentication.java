@@ -1,4 +1,4 @@
-package org.LukDT.task_manager_api.dto;
+package org.luk.task_manager_api.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
@@ -17,6 +17,6 @@ public class JwtAuthentication {
   @Schema(description = "Refresh токен", example = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTYyMjUwNj...")
   private String refreshToken;
 
-  @Schema(description = "Данные пользователя")
-  private UserResponse userResponse;
+  //@Schema(description = "Данные пользователя")
+  //private UserResponse userResponse;
 }

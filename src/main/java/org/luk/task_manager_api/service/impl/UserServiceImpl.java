@@ -1,19 +1,20 @@
-package org.LukDT.task_manager_api.service.impl;
+package org.luk.task_manager_api.service.impl;
 
 import java.util.stream.Collectors;
 import java.util.Set;
 
-import org.LukDT.task_manager_api.config.CustomUserDetailsService;
-import org.LukDT.task_manager_api.config.jwt.JwtService;
-import org.LukDT.task_manager_api.model.User;
-import org.LukDT.task_manager_api.model.Role;
-import org.LukDT.task_manager_api.repository.RoleRepository;
-import org.LukDT.task_manager_api.repository.UserRepository;
-import org.LukDT.task_manager_api.dto.JwtAuthentication;
-import org.LukDT.task_manager_api.dto.LoginRequest;
-import org.LukDT.task_manager_api.dto.RegisterRequest;
-import org.LukDT.task_manager_api.dto.RoleResponse;
-import org.LukDT.task_manager_api.dto.UserResponse;
+import org.luk.task_manager_api.config.CustomUserDetailsService;
+import org.luk.task_manager_api.config.jwt.JwtService;
+import org.luk.task_manager_api.model.User;
+import org.luk.task_manager_api.model.Role;
+import org.luk.task_manager_api.repository.RoleRepository;
+import org.luk.task_manager_api.repository.UserRepository;
+import org.luk.task_manager_api.service.UserService;
+import org.luk.task_manager_api.dto.JwtAuthentication;
+import org.luk.task_manager_api.dto.LoginRequest;
+import org.luk.task_manager_api.dto.RegisterRequest;
+import org.luk.task_manager_api.dto.RoleResponse;
+import org.luk.task_manager_api.dto.UserResponse;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -68,7 +69,7 @@ public class UserServiceImpl implements UserService {
     String accessToken = jwtService.generateToken(userDetails);
     String refreshToken = jwtService.generateRefreshToken(userDetails);
 
-    return new JwtAuthentication(accessToken, refreshToken, mapToUserResponse(user));
+    return new JwtAuthentication(accessToken, refreshToken);
   }
 
   @Override

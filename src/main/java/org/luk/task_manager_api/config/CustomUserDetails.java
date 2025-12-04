@@ -1,10 +1,10 @@
-package org.LukDT.task_manager_api.config; 
+package org.luk.task_manager_api.config; 
 
-import java.util.List;
+import java.util.Set;
 import java.util.Collection;
 
-import org.LukDT.task_manager_api.model.User;
-import org.LukDT.task_manager_api.model.Role;
+import org.luk.task_manager_api.model.User;
+import org.luk.task_manager_api.model.Role;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,7 +15,7 @@ public record CustomUserDetails(User user) implements UserDetails {
   //Возвращает предоставленные пользователю полномочия.
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return roles.stream()
+    return getRoles().stream()
               .map(role -> new SimpleGrantedAuthority(role.getName()))
               .toList();
   }
@@ -34,7 +34,7 @@ public record CustomUserDetails(User user) implements UserDetails {
     return user.getId();
   }
 
-  public List<Role> getRoles() {
+  public Set<Role> getRoles() {
     return user.getRoles();
   }
 

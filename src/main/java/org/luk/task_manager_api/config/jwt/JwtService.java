@@ -1,8 +1,8 @@
-package org.LukDT.task_manager_api.config; 
+package org.luk.task_manager_api.config.jwt; 
 
-import org.LukDT.task_manager_api.model.User;
-import org.LukDT.task_manager_api.model.Role;
-import org.LukDT.task_manager_api.dto.JwtAuthentication;
+import org.luk.task_manager_api.model.User;
+import org.luk.task_manager_api.model.Role;
+import org.luk.task_manager_api.dto.JwtAuthentication;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -14,6 +14,7 @@ import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import io.jsonwebtoken.Claims;
@@ -99,8 +100,7 @@ public class JwtService {
         .setSigningKey(getSignInKey())
         .build()
         .parseClaimsJws(token)
-        .getBody()
-        .getSubject();
+        .getBody();
       
       Date expiration = claims.getExpiration();
       return expiration.after(new Date());  
@@ -115,6 +115,7 @@ public class JwtService {
             .setSigningKey(getSignInKey())
             .build()
             .parseClaimsJws(token)
-            .getBody();
+            .getBody()
+            .getSubject();
   }
 }

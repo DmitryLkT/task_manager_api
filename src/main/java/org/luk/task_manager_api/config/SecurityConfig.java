@@ -1,6 +1,6 @@
-package org.LukDT.task_manager_api.config;
+package org.luk.task_manager_api.config;
 
-import org.LukDT.task_manager_api.config.jwt.JwtAuthenticationFilter;
+import org.luk.task_manager_api.config.jwt.JwtAuthenticationFilter;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,7 +25,7 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
-      .csrf().disable()
+      .csrf(csrf -> csrf.disable())
       .cors(cors -> {})
       .authorizeHttpRequests(auth -> auth
         .requestMatchers("/auth/**").permitAll()
@@ -33,7 +33,7 @@ public class SecurityConfig {
         .requestMatchers("/admin/**").hasRole("ADMIN")
         .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
         .anyRequest().authenticated())
-      .sessionManagement(session -> session.sessionCreationPolicy(sessionCreationPolicy.STATELESS))
+      .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
       .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     return http.build();      
   }

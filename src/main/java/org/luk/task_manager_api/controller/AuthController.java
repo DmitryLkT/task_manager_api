@@ -1,10 +1,10 @@
-package org.LukDT.task_manager_api.controller; 
+package org.luk.task_manager_api.controller; 
 
-import org.LukDT.task_manager_api.service.UserService;
-import org.LukDT.task_manager_api.dto.RegisterRequest;
-import org.LukDT.task_manager_api.dto.LoginRequest;
-import org.LukDT.task_manager_api.dto.UserResponse;
-import org.LukDT.task_manager_api.dto.JwtAuthentication;
+import org.luk.task_manager_api.service.UserService;
+import org.luk.task_manager_api.dto.RegisterRequest;
+import org.luk.task_manager_api.dto.LoginRequest;
+import org.luk.task_manager_api.dto.UserResponse;
+import org.luk.task_manager_api.dto.JwtAuthentication;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

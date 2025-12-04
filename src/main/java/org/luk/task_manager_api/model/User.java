@@ -1,4 +1,4 @@
-package org.LukDT.task_manager_api.model;
+package org.luk.task_manager_api.model;
 
 import java.util.Set;
 import java.util.HashSet;
@@ -12,7 +12,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Column;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.Table;
 
 import lombok.AccessLevel;
@@ -41,7 +40,7 @@ public class User {
   @Column(name="password_hash", nullable=false, length=255)
   private String password;
 
-  @ManyToMany(cascade=CascadeType.LAZY)
+  @ManyToMany(cascade=CascadeType.PERSIST)
   @JoinTable(
     name="user_roles",
     joinColumns=@JoinColumn(name="user_id"),

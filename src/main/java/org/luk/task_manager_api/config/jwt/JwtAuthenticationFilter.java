@@ -1,8 +1,8 @@
-package org.LukDT.task_manager_api.config.jwt;
+package org.luk.task_manager_api.config.jwt;
 
-import org.LukDT.task_manager_api.config.jwt.JwtService;
-import org.LukDT.task_manager_api.config.CustomUserDetails;
-import org.LukDT.task_manager_api.config.CustomUserDetailsService;
+import org.luk.task_manager_api.config.jwt.JwtService;
+import org.luk.task_manager_api.config.CustomUserDetails;
+import org.luk.task_manager_api.config.CustomUserDetailsService;
 
 import java.io.IOException;
 
@@ -16,7 +16,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 
 @Component
