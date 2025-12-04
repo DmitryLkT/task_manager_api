@@ -1,11 +1,18 @@
-import org.LukDT.task_manager_api.repository.*;
-
 import java.util.stream.Collectors;
+import java.util.Set;
 
-import org.LukDT.task_manager_api.config.customUserDetailsService;
+import org.LukDT.task_manager_api.config.CustomUserDetailsService;
 import org.LukDT.task_manager_api.config.jwt.JwtService;
+import org.LukDT.task_manager_api.model.User;
+import org.LukDT.task_manager_api.model.Role;
+import org.LukDT.task_manager_api.repository.RoleRepository;
+import org.LukDT.task_manager_api.repository.UserRepository;
+import org.LukDT.task_manager_api.dto.JwtAuthentication;
+import org.LukDT.task_manager_api.dto.LoginRequest;
+import org.LukDT.task_manager_api.dto.RegisterRequest;
+import org.LukDT.task_manager_api.dto.RoleResponse;
+import org.LukDT.task_manager_api.dto.UserResponse;
 
-import org.apache.catalina.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -69,7 +76,7 @@ public class UserServiceImpl implements UserService {
 
     String email = auth.getName();
 
-    User user = userRepository.findByEmail(request.getEmail())
+    User user = userRepository.findByEmail(email)
                  .orElseThrow(() -> new RuntimeException("User not found"));
 
     return mapToUserResponse(user);
