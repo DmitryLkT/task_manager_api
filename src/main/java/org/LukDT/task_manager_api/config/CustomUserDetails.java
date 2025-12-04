@@ -1,3 +1,5 @@
+package org.LukDT.task_manager_api.config; 
+
 import java.util.List;
 import java.util.Collection;
 

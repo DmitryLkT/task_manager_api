@@ -1,3 +1,5 @@
+package org.LukDT.task_manager_api.config.jwt;
+
 import org.LukDT.task_manager_api.config.jwt.JwtService;
 import org.LukDT.task_manager_api.config.CustomUserDetails;
 import org.LukDT.task_manager_api.config.CustomUserDetailsService;

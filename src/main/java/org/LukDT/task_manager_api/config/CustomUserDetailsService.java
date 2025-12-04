@@ -1,3 +1,5 @@
+package org.LukDT.task_manager_api.config; 
+
 import org.LukDT.task_manager_api.model.User;
 import org.LukDT.task_manager_api.repository.UserRepository;
 

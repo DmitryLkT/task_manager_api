@@ -1,3 +1,5 @@
+package org.LukDT.task_manager_api.controller; 
+
 import org.LukDT.task_manager_api.service.UserService;
 import org.LukDT.task_manager_api.dto.RegisterRequest;
 import org.LukDT.task_manager_api.dto.LoginRequest;

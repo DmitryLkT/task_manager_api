@@ -1,3 +1,5 @@
+package org.LukDT.task_manager_api.model;
+
 import java.util.Set;
 import java.util.HashSet;
 
