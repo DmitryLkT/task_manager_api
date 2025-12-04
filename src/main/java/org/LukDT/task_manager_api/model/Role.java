@@ -37,7 +37,7 @@ public class Role {
 
   @Enumerated(EnumType.STRING)
   @Column(name="name", nullable=false)
-  private String name;
+  private RoleType name;
   
   @ManyToMany(mappedBy="roles", fetch=FetchType.LAZY)
   private Set<User> users = new HashSet<>();
