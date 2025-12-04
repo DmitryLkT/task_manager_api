@@ -1,4 +1,5 @@
 import org.LukDT.task_manager_api.config.jwt.JwtService;
+import org.LukDT.task_manager_api.config.CustomUserDetails;
 import org.LukDT.task_manager_api.config.CustomUserDetailsService;
 
 import java.io.IOException;
@@ -13,11 +14,11 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
+
+import lombok.RequiredArgsConstructor;
 
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
   private final JwtService jwtService;
   private final CustomUserDetailsService customUserDetailsService;

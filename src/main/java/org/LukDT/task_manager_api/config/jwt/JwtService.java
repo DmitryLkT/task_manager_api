@@ -11,7 +11,6 @@ import java.util.stream.Collectors;
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
@@ -98,7 +97,8 @@ public class JwtService {
         .setSigningKey(getSignInKey())
         .build()
         .parseClaimsJws(token)
-        .getBody();
+        .getBody()
+        .getSubject();
       
       Date expiration = claims.getExpiration();
       return expiration.after(new Date());  
