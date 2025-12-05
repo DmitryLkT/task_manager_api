@@ -26,9 +26,9 @@ CREATE INDEX idx_user_roles_role_id ON user_roles(role_id);
 
 CREATE TABLE projects (
     id SERIAL PRIMARY KEY,
-    title VARCHAR(75),
+    title VARCHAR(75) DEFAULT 'New Project',
     description VARCHAR(350) NOT NULL,
-    createdAt TIMESTAMP  NOT NULL,
+    createdAt TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP,
     owner INT NOT NULL REFERENCES users(id) ON DELETE CASCADE
 );
 
@@ -36,14 +36,14 @@ CREATE INDEX idx_projects_user_id ON projects(owner);
 
 CREATE TABLE tasks (
     id SERIAL PRIMARY KEY,
-    title VARCHAR(75),
+    title VARCHAR(75) DEFAULT 'New Task',
     description VARCHAR(350) NOT NULL,
     status VARCHAR(20) NOT NULL
         CHECK (status IN ('TODO', 'IN_PROGRESS', 'DONE')),
     project INT NOT NULL REFERENCES projects(id) ON DELETE CASCADE,
     assignedTo INT REFERENCES users(id) ON DELETE SET NULL,
-    createdAt TIMESTAMP NOT NULL,
-    updatedAt TIMESTAMP NOT NULL
+    createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE INDEX idx_tasks_project ON tasks(project);
