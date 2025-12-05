@@ -29,7 +29,7 @@ public class SecurityConfig {
       .cors(cors -> {})
       .authorizeHttpRequests(auth -> auth
         .requestMatchers("/auth/**").permitAll()
-        .requestMatchers("/swagger-ui/**","/swagger-ui.html", "/swagger-resources/**", "/v3-api-docs/**").permitAll()
+        .requestMatchers("/swagger-ui/**","/swagger-ui.html", "/swagger-resources/**", "/v3/api-docs/**").permitAll()
         .requestMatchers("/admin/**").hasRole("ADMIN")
         .requestMatchers("/user/**").hasAnyRole("USER", "ADMIN")
         .anyRequest().authenticated())
