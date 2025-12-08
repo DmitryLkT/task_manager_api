@@ -17,6 +17,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -24,6 +25,7 @@ import lombok.Setter;
 @Entity
 @Setter
 @Getter
+@AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "tasks")
 public class Task {
@@ -44,11 +46,11 @@ public class Task {
   private Status status = Status.TODO;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "project", nullable = false)
+  @JoinColumn(name = "project_id", nullable = false)
   private Project project;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "assignedTo", nullable = false)
+  @JoinColumn(name = "user_id", nullable = false)
   private User user;
 
   @Column(name = "createdAt", nullable = false)
@@ -59,7 +61,7 @@ public class Task {
   @UpdateTimestamp 
   private LocalDateTime updatedAt;
 
-  private Task(String title, String description, Project project, User user) {
+  public Task(String title, String description, Project project, User user) {
     this.title = title;
     this.description = description;
     this.project = project;
