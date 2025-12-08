@@ -16,7 +16,4 @@ public class JwtAuthentication {
 
   @Schema(description = "Refresh токен", example = "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTYyMjUwNj...")
   private String refreshToken;
-
-  //@Schema(description = "Данные пользователя")
-  //private UserResponse userResponse;
 }
