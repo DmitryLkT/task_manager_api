@@ -72,19 +72,6 @@ public class UserServiceImpl implements UserService {
     return new JwtAuthentication(accessToken, refreshToken);
   }
 
-  @Override
-  @Transactional
-  public UserResponse getCurrentUser() {
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-    String email = auth.getName();
-
-    User user = userRepository.findByEmail(email)
-                 .orElseThrow(() -> new RuntimeException("User not found"));
-
-    return mapToUserResponse(user);
-  }
-
   private UserResponse mapToUserResponse(User user) {
     Set<RoleResponse> roles = user.getRoles().stream()
                 .map(r -> new RoleResponse(r.getId(), r.getName()))
