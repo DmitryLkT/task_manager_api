@@ -19,8 +19,8 @@ public class ProjectRequest {
   @Size(min=1, max=75, message = "Название проекта может содержать от 1 до 75 символов")
   @Schema(description = "Название проекта", example = "task_manager_api")
   @NotBlank(message = "Не может быть пустым")
-  @Pattern(regexp = "^[a-zA-Zа-яА-ЯёЁ0-9\\\\s_\\\\-.,!?()\\\"']+$",
-    message = "Допустимы буквы, цифры, пробелы и основные знаки препинания")
+  @Pattern(regexp = "^[a-zA-Z0-9]+[a-zA-Z0-9_-]*[a-zA-Z0-9]+$",
+    message = "Разрешены английские буквы, цифры, дефис и подчеркивание в середине")
   private String title;
 
   @Size(min=1, max=500, message = "Описание проекта может содержать от 1 до 500 символов")
