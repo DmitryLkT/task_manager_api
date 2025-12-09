@@ -1,6 +1,7 @@
 package org.luk.task_manager_api.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.luk.task_manager_api.dto.ProjectRequest;
 import org.luk.task_manager_api.dto.ProjectResponse;
@@ -24,10 +25,14 @@ public class ProjectServiceImpl implements ProjectService {
 
   @Override
   @Transactional
-  public List<Project> getAllProjectsFromUser() {
+  public List<ProjectResponse> getAllProjectsFromUser() {
     User user = getCurrentUser();
+
+    List<Project> projects = projectRepository.findByOwner(user);
     
-    return projectRepository.findByOwner(user);
+    return projects.stream()
+                .map(p -> ProjectResponse.fromEntity(p))
+                .collect(Collectors.toList());
   }
 
   @Override

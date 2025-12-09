@@ -7,7 +7,7 @@ import org.luk.task_manager_api.dto.ProjectResponse;
 import org.luk.task_manager_api.model.Project;
 
 public interface ProjectService {
-  List<Project> getAllProjectsFromUser();
+  List<ProjectResponse> getAllProjectsFromUser();
 
   ProjectResponse getProject(String title);
 
