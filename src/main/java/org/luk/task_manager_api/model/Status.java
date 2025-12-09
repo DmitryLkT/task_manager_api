@@ -1,5 +1,14 @@
 package org.luk.task_manager_api.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public enum Status {
-  TODO, IN_PROGRESS, DONE
+  @JsonProperty("todo")
+  TODO, 
+
+  @JsonProperty("in_progress")
+  IN_PROGRESS, 
+
+  @JsonProperty("done")
+  DONE
 }
