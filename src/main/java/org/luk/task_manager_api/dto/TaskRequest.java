@@ -1,7 +1,5 @@
 package org.luk.task_manager_api.dto;
 
-import java.io.ObjectInputFilter.Status;
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -28,7 +26,4 @@ public class TaskRequest {
   @Size(min=1, max=350, message = "Описание задачи может содержать от 1 до 350 символов")
   @Schema(description = "Описание задачи")
   private String description;
-
-  @Schema(description = "Статус задачи")
-  private Status status;
 }
