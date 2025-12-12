@@ -1,14 +1,14 @@
 package org.luk.task_manager_api.dto;
 
+import org.luk.task_manager_api.model.Role;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Builder
 @Schema(description = "Ответ с информацией о роли")
 public class RoleResponse {
 
@@ -17,4 +17,11 @@ public class RoleResponse {
 
   @Schema(description="Название роли", example="ROLE_USER")
   private String name;
+
+  public static RoleResponse fromEntity(Role role) {
+    return RoleResponse.builder()
+            .id(role.getId())
+            .name(role.getName())
+            .build();
+  }
 }
