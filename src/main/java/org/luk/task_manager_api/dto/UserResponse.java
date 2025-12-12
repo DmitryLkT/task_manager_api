@@ -2,15 +2,13 @@ package org.luk.task_manager_api.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.Set;
+import org.luk.task_manager_api.model.User;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Builder
 @Schema(description="Ответ с данными пользователя")
 public class UserResponse {
 
@@ -24,5 +22,14 @@ public class UserResponse {
   private String email;
 
   @Schema(description = "Роли пользователя")
-  private Set<RoleResponse> roles;
+  private String role;
+
+  public static UserResponse fromEntity(User user) {
+    return UserResponse.builder()
+            .id(user.getId())
+            .name(user.getName())
+            .email(user.getEmail())
+            .role(user.getRole().getName())
+            .build();
+  }
 }
