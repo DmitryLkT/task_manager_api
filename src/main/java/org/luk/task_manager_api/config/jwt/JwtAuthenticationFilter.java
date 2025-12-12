@@ -1,6 +1,5 @@
 package org.luk.task_manager_api.config.jwt;
 
-import org.luk.task_manager_api.config.jwt.JwtService;
 import org.luk.task_manager_api.config.CustomUserDetails;
 import org.luk.task_manager_api.config.CustomUserDetailsService;
 

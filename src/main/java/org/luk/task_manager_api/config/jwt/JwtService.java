@@ -1,14 +1,11 @@
 package org.luk.task_manager_api.config.jwt; 
 
 import org.luk.task_manager_api.model.User;
-import org.luk.task_manager_api.model.Role;
 import org.luk.task_manager_api.dto.JwtAuthentication;
 
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.crypto.SecretKey;
 
@@ -46,11 +43,9 @@ public class JwtService {
       claims.put("id", customUserDetails.getId());
       claims.put("email", customUserDetails.getEmail());
 
-      List<String> roleName = customUserDetails.getRoles().stream()
-            .map(Role::getName)
-            .collect(Collectors.toList());
+      String roleName = customUserDetails.getRole().getName();
       
-      claims.put("roles", roleName);      
+      claims.put("role", roleName);      
     }
 
     return Jwts.builder()

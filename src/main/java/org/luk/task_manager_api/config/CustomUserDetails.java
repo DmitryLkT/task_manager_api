@@ -1,10 +1,10 @@
 package org.luk.task_manager_api.config; 
 
-import java.util.Set;
 import java.util.Collection;
+import java.util.List;
 
-import org.luk.task_manager_api.model.User;
 import org.luk.task_manager_api.model.Role;
+import org.luk.task_manager_api.model.User;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -15,9 +15,7 @@ public record CustomUserDetails(User user) implements UserDetails {
   //Возвращает предоставленные пользователю полномочия.
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return getRoles().stream()
-              .map(role -> new SimpleGrantedAuthority(role.getName()))
-              .toList();
+    return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().getName()));
   }
 
   @Override
@@ -34,8 +32,8 @@ public record CustomUserDetails(User user) implements UserDetails {
     return user.getId();
   }
 
-  public Set<Role> getRoles() {
-    return user.getRoles();
+  public Role getRole() {
+    return user.getRole();
   }
 
   //Указывает, истёк ли аккаунт пользователя.
