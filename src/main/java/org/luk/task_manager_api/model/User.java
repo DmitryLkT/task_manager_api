@@ -1,16 +1,12 @@
 package org.luk.task_manager_api.model;
 
-import java.util.Set;
-import java.util.HashSet;
-
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Column;
 import jakarta.persistence.Table;
 
@@ -40,27 +36,14 @@ public class User {
   @Column(name="password_hash", nullable=false, length=255)
   private String password;
 
-  @ManyToMany(cascade=CascadeType.PERSIST)
-  @JoinTable(
-    name="user_roles",
-    joinColumns=@JoinColumn(name="user_id"),
-    inverseJoinColumns=@JoinColumn(name="role_id") 
-  )
-  private Set<Role> roles = new HashSet<>();
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "role_id", nullable = false)
+  private Role role;
 
-  public User(String name, String email, String password) {
+  public User(String name, String email, String password, Role role) {
     this.name = name;
     this.email = email;
     this.password = password;
-  }
-
-  public void addRolesToUser(Role role) {
-    this.roles.add(role);
-    role.getUsers().add(this);
-  }
-
-  public void removeRolesToUser(Role role) {
-    this.roles.remove(role);
-    role.getUsers().remove(this);
+    this.role = role;
   }
 }
