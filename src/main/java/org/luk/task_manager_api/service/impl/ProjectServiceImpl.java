@@ -8,25 +8,23 @@ import org.luk.task_manager_api.dto.ProjectResponse;
 import org.luk.task_manager_api.model.Project;
 import org.luk.task_manager_api.model.User;
 import org.luk.task_manager_api.repository.ProjectRepository;
-import org.luk.task_manager_api.repository.UserRepository;
+import org.luk.task_manager_api.service.CurrentUserService;
 import org.luk.task_manager_api.service.ProjectService;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class ProjectServiceImpl implements ProjectService {
   private final ProjectRepository projectRepository;
-  private final UserRepository userRepository;
+  private final CurrentUserService currentUserService;
 
   @Override
   @Transactional
   public List<ProjectResponse> getAllProjectsFromUser() {
-    User user = getCurrentUser();
+    User user = currentUserService.getCurrentUser();
 
     List<Project> projects = projectRepository.findByOwner(user);
     
@@ -38,8 +36,13 @@ public class ProjectServiceImpl implements ProjectService {
   @Override
   @Transactional
   public ProjectResponse getProject(String title) {
+    User user = currentUserService.getCurrentUser();
+
     Project project = projectRepository.findByTitle(title)
                   .orElseThrow(() -> new RuntimeException("Project not found"));
+
+    currentUserService.checkProjectOwnership(project, user);             
+
     return ProjectResponse.fromEntity(project);              
   }
 
@@ -53,7 +56,7 @@ public class ProjectServiceImpl implements ProjectService {
     Project project = new Project(
       request.getTitle(), 
       request.getDescription(), 
-      getCurrentUser()
+      currentUserService.getCurrentUser()
     );
     
     projectRepository.save(project);
@@ -64,12 +67,19 @@ public class ProjectServiceImpl implements ProjectService {
   @Override
   @Transactional
   public ProjectResponse updateProject(String title, ProjectRequest request) {
+    User user = currentUserService.getCurrentUser();
     Project project = projectRepository.findByTitle(title)
                   .orElseThrow(() -> new RuntimeException("Project not found"));
+
+    currentUserService.checkProjectOwnership(project, user);              
     
-    if(request.getTitle() != null) {
+    if(request.getTitle() != null && !request.getTitle().equals(project.getTitle())) {
+      if(projectRepository.existsByTitle(request.getTitle())) {
+        throw new RuntimeException("Title already taken");
+      }
+      
       project.setTitle(request.getTitle());
-    }
+    } 
 
     if(request.getDescription() != null) {
       project.setDescription(request.getDescription());
@@ -83,15 +93,12 @@ public class ProjectServiceImpl implements ProjectService {
   @Override
   @Transactional
   public void deleteProject(String title) {
+    User user = currentUserService.getCurrentUser();
     Project project = projectRepository.findByTitle(title)
                   .orElseThrow(() -> new RuntimeException("Project not found"));
                  
-    projectRepository.deleteById(project.getId());       
-  }
-
-  private User getCurrentUser() {
-    String email = SecurityContextHolder.getContext().getAuthentication().getName();
-    return userRepository.findByEmail(email)
-          .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    currentUserService.checkProjectOwnership(project, user);
+    
+    projectRepository.delete(project);       
   }
 }
