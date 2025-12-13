@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 public class TaskRequest {
 
   @Size(min=1, max=75, message = "Название задачи может содержать от 1 до 75 символов")
-  @Schema(description = "Название задачи", example = "add methods")
+  @Schema(description = "Название задачи", example = "add methods", defaultValue = "New Task")
   @NotBlank(message = "Не может быть пустым")
   @Pattern(regexp = "^[a-zA-Z0-9]+[a-zA-Z0-9_-]*[a-zA-Z0-9]+$",
     message = "Разрешены английские буквы, цифры, дефис и подчеркивание в середине")
