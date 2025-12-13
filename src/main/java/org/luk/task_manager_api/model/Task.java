@@ -38,11 +38,11 @@ public class Task {
   @Column(name = "title")
   private String title = "New Task";
 
-  @Column(name = "description", nullable = false)
+  @Column(name = "description")
   private String description;
 
   @Enumerated(EnumType.STRING)
-  @Column(name = "status", nullable = false, length = 20)
+  @Column(name = "status", length = 20)
   private Status status = Status.TODO;
 
   @ManyToOne(fetch = FetchType.LAZY)
