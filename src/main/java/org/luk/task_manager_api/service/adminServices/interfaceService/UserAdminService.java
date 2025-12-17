@@ -9,5 +9,5 @@ public interface UserAdminService {
 
   UserResponse getUserById(Long id);
 
-  void updateUserRole(Long userId, Long roleId);
+  void updateUserRole(Long userId, String role);
 }

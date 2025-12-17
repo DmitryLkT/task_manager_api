@@ -46,15 +46,15 @@ public class UserAdminServiceImpl implements UserAdminService {
 
   @Override
   @Transactional
-  public void updateUserRole(Long userId, Long roleId) {
+  public void updateUserRole(Long userId, String role) {
     checkAdminAccess();
 
     User user = userRepository.findById(userId)
         .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + userId));
-    Role role = roleRepository.findById(roleId)
-        .orElseThrow(() -> new UsernameNotFoundException("Role not found with id: " + roleId));
+    Role findRole = roleRepository.findByName(role.trim().toUpperCase())
+                .orElseThrow(() -> new RuntimeException());
 
-    user.setRole(role);
+    user.setRole(findRole);
   }
 
 
