@@ -1,6 +1,6 @@
 package org.luk.task_manager_api.config.jwt; 
 
-import org.luk.task_manager_api.model.User;
+import org.luk.task_manager_api.config.CustomUserDetails;
 import org.luk.task_manager_api.dto.JwtAuthentication;
 
 import java.util.Date;
@@ -39,9 +39,9 @@ public class JwtService {
   //генерирует access-токен
   public String generateToken(UserDetails userDetails) {
     Map<String, Object> claims = new HashMap<>();
-    if(userDetails instanceof User customUserDetails) {
+    if(userDetails instanceof CustomUserDetails customUserDetails) {
       claims.put("id", customUserDetails.getId());
-      claims.put("email", customUserDetails.getEmail());
+      claims.put("email", customUserDetails.getUsername());
 
       String roleName = customUserDetails.getRole().getName();
       
