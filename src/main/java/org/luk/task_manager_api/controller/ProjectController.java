@@ -4,7 +4,10 @@ import java.util.List;
 
 import org.luk.task_manager_api.dto.ProjectRequest;
 import org.luk.task_manager_api.dto.ProjectResponse;
+import org.luk.task_manager_api.dto.TaskRequest;
+import org.luk.task_manager_api.dto.TaskResponse;
 import org.luk.task_manager_api.service.ProjectService;
+import org.luk.task_manager_api.service.TaskService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,10 +26,16 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/projects")
 public class ProjectController {
   private final ProjectService projectService;
+  private final TaskService taskService;
   
-  @GetMapping
+  @GetMapping("/allProjects")
   public ResponseEntity<List<ProjectResponse>> getAllProjectsFromUser() {
     return ResponseEntity.ok(projectService.getAllProjectsFromUser());
+  }
+
+  @GetMapping("/{title}/tasks")
+  public ResponseEntity<List<TaskResponse>> getAllTasksThisProject(@PathVariable String title) {
+    return ResponseEntity.ok(taskService.getAllTasksThisProject(title));
   }
 
   @GetMapping("/{title}")
@@ -35,10 +44,17 @@ public class ProjectController {
     return ResponseEntity.ok(response);
   }
 
-  @PostMapping
+  @PostMapping("/created")
   public ResponseEntity<ProjectResponse> createdProject(@Valid @RequestBody ProjectRequest request) {
     ProjectResponse response = projectService.createdProject(request);
     return ResponseEntity.ok(response);
+  }
+
+  @PostMapping("/{title}/tasks")
+  public ResponseEntity<TaskResponse> createdTask(@PathVariable String titleProject, 
+                                                    @Valid @RequestBody TaskRequest request) {
+  
+    return ResponseEntity.ok(taskService.createdTask(titleProject, request)); 
   }
 
   @PutMapping("/{title}")
