@@ -15,7 +15,7 @@ public record CustomUserDetails(User user) implements UserDetails {
   //Возвращает предоставленные пользователю полномочия.
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole().getName()));
+    return List.of(new SimpleGrantedAuthority(user.getRole().getName()));
   }
 
   @Override
