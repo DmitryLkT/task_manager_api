@@ -24,8 +24,8 @@ public class LoginRequest {
   private String email;
 
   @Size(min=8, max=255, message = "Пароль пользователя должен быть от 8 до 255 символов")
-  @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$",
-    message = "Пароль должен содержать минимум 8 символов, цифру, заглавную и строчную букву, специальный символ")
+  @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$",
+    message = "Пароль должен содержать минимум 8 символов, цифру, заглавную и строчную букву")
   @Schema(description = "Пароль", example = "superPass147")
   @NotBlank(message = "Не может быть пустым")
   private String password;
