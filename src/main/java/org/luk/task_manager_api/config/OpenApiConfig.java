@@ -14,6 +14,6 @@ public class OpenApiConfig {
             .info(new Info()
                     .title("Task Manager API")
                     .description("Документация для проекта Task Manager API")
-                    .version("0.1"));
+                    .version("0.2"));
   }
 }

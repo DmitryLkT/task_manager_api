@@ -2,6 +2,7 @@ package org.luk.task_manager_api.config.jwt;
 
 import org.luk.task_manager_api.config.CustomUserDetails;
 import org.luk.task_manager_api.dto.JwtAuthentication;
+import org.luk.task_manager_api.exception.InvalidRefreshTokenException;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -70,7 +71,7 @@ public class JwtService {
   //обновляет токены, если они не валидны
   public JwtAuthentication refreshTokens(String refreshToken) {
     if(!isTokenValid(refreshToken)) {
-      throw new RuntimeException("Invalid or expired refresh token");
+      throw new InvalidRefreshTokenException(refreshToken);
     }
 
     String email = extractEmail(refreshToken);
