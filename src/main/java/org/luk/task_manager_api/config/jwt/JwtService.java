@@ -2,7 +2,7 @@ package org.luk.task_manager_api.config.jwt;
 
 import org.luk.task_manager_api.config.CustomUserDetails;
 import org.luk.task_manager_api.dto.JwtAuthentication;
-import org.luk.task_manager_api.exception.InvalidRefreshTokenException;
+import org.luk.task_manager_api.exception.customExceptions.InvalidRefreshTokenException;
 
 import java.util.Date;
 import java.util.HashMap;
