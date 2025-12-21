@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import org.luk.task_manager_api.dto.ProjectRequest;
 import org.luk.task_manager_api.dto.ProjectResponse;
+import org.luk.task_manager_api.exception.customExceptions.ProjectAlreadyExistsException;
+import org.luk.task_manager_api.exception.customExceptions.ProjectNotFoundException;
 import org.luk.task_manager_api.model.Project;
 import org.luk.task_manager_api.model.User;
 import org.luk.task_manager_api.repository.ProjectRepository;
@@ -39,7 +41,7 @@ public class ProjectServiceImpl implements ProjectService {
     User user = currentUserService.getCurrentUser();
 
     Project project = projectRepository.findByTitle(title)
-                  .orElseThrow(() -> new RuntimeException("Project not found"));
+                  .orElseThrow(() -> new ProjectNotFoundException(title));
 
     currentUserService.checkProjectOwnership(project, user);             
 
@@ -50,7 +52,7 @@ public class ProjectServiceImpl implements ProjectService {
   @Transactional
   public ProjectResponse createdProject(ProjectRequest request) {
     if(projectRepository.existsByTitle(request.getTitle())) {
-      throw new RuntimeException("Project with that title already exists.");
+      throw new ProjectAlreadyExistsException();
     }
 
     Project project = new Project(
@@ -69,13 +71,13 @@ public class ProjectServiceImpl implements ProjectService {
   public ProjectResponse updateProject(String title, ProjectRequest request) {
     User user = currentUserService.getCurrentUser();
     Project project = projectRepository.findByTitle(title)
-                  .orElseThrow(() -> new RuntimeException("Project not found"));
+                  .orElseThrow(() -> new ProjectNotFoundException(title));
 
     currentUserService.checkProjectOwnership(project, user);              
     
     if(request.getTitle() != null && !request.getTitle().equals(project.getTitle())) {
       if(projectRepository.existsByTitle(request.getTitle())) {
-        throw new RuntimeException("Title already taken");
+        throw new ProjectAlreadyExistsException();
       }
       
       project.setTitle(request.getTitle());
@@ -95,7 +97,7 @@ public class ProjectServiceImpl implements ProjectService {
   public void deleteProject(String title) {
     User user = currentUserService.getCurrentUser();
     Project project = projectRepository.findByTitle(title)
-                  .orElseThrow(() -> new RuntimeException("Project not found"));
+                  .orElseThrow(() -> new ProjectNotFoundException(title));
                  
     currentUserService.checkProjectOwnership(project, user);
     
