@@ -5,6 +5,8 @@ import java.util.stream.Collectors;
 
 import org.luk.task_manager_api.dto.TaskRequest;
 import org.luk.task_manager_api.dto.TaskResponse;
+import org.luk.task_manager_api.exception.customExceptions.ProjectNotFoundException;
+import org.luk.task_manager_api.exception.customExceptions.TaskNotFoundException;
 import org.luk.task_manager_api.model.Project;
 import org.luk.task_manager_api.model.Status;
 import org.luk.task_manager_api.model.Task;
@@ -97,7 +99,7 @@ public class TaskServiceImpl implements TaskService {
   private Project getCurrentProject(String title) {
     User user = currentUserService.getCurrentUser(); 
     Project project = projectRepository.findByTitle(title)
-                  .orElseThrow(() -> new RuntimeException("Project not found"));
+                  .orElseThrow(() -> new ProjectNotFoundException(title));
     currentUserService.checkProjectOwnership(project, user);
     
     return project;
@@ -106,10 +108,10 @@ public class TaskServiceImpl implements TaskService {
   private Task getCurrentTask(Long id) {
     User user = currentUserService.getCurrentUser();
     Task task = taskRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Task not found"));
+                .orElseThrow(() -> new TaskNotFoundException(id));
 
     if(!task.getUser().getId().equals(user.getId())) {
-      throw new RuntimeException("Task not found");
+      throw new TaskNotFoundException(id);
     }
 
     return task;
