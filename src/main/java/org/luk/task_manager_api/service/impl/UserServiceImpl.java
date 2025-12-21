@@ -11,7 +11,9 @@ import org.luk.task_manager_api.dto.JwtAuthentication;
 import org.luk.task_manager_api.dto.LoginRequest;
 import org.luk.task_manager_api.dto.RegisterRequest;
 import org.luk.task_manager_api.dto.UserResponse;
-
+import org.luk.task_manager_api.exception.customExceptions.InvalidCredentialsException;
+import org.luk.task_manager_api.exception.customExceptions.UserAlreadyExistsException;
+import org.luk.task_manager_api.exception.customExceptions.UserNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -31,7 +33,7 @@ public class UserServiceImpl implements UserService {
   @Transactional
   public UserResponse register(RegisterRequest request) {
     if(userRepository.existsByEmail(request.getEmail())) {
-      throw new RuntimeException("Email already exists: " + request.getEmail()); //поменять на EmailAlreadyExistsException
+      throw new UserAlreadyExistsException(request.getEmail());
     }
 
     User user = new User();
@@ -53,10 +55,10 @@ public class UserServiceImpl implements UserService {
   @Transactional
   public JwtAuthentication login(LoginRequest request) {
     User user = userRepository.findByEmail(request.getEmail())
-                 .orElseThrow(() -> new RuntimeException("User not found"));
+                 .orElseThrow(() -> new UserNotFoundException(request.getEmail()));
 
     if(!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
-      throw new RuntimeException("Invalid password");
+      throw new InvalidCredentialsException();
     }
 
     UserDetails userDetails = new CustomUserDetails(user);
