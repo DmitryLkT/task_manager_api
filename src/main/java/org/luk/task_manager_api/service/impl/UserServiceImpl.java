@@ -14,7 +14,6 @@ import org.luk.task_manager_api.dto.UserResponse;
 import org.luk.task_manager_api.exception.customExceptions.InvalidCredentialsException;
 import org.luk.task_manager_api.exception.customExceptions.UserAlreadyExistsException;
 import org.luk.task_manager_api.exception.customExceptions.UserNotFoundException;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -32,7 +31,6 @@ public class UserServiceImpl implements UserService {
   
   @Override
   @Transactional
-  @PreAuthorize("hasRole('USER')")
   public UserResponse register(RegisterRequest request) {
     if(userRepository.existsByEmail(request.getEmail())) {
       throw new UserAlreadyExistsException(request.getEmail());
@@ -55,7 +53,6 @@ public class UserServiceImpl implements UserService {
 
   @Override
   @Transactional
-  @PreAuthorize("hasRole('USER')")
   public JwtAuthentication login(LoginRequest request) {
     User user = userRepository.findByEmail(request.getEmail())
                  .orElseThrow(() -> new UserNotFoundException(request.getEmail()));
