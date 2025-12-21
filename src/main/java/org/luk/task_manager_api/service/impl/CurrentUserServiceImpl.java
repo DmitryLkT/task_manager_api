@@ -32,13 +32,6 @@ public class CurrentUserServiceImpl implements CurrentUserService {
   }
   
   @Override
-  public boolean isAdmin() {
-    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-    return authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
-  }
-
-  @Override
   public void checkProjectOwnership(Project project, User user) {
     if(!project.getOwner().getId().equals(user.getId())) {
       throw new AccessDeniedException(String.format("Access denied to project: %s", project.getTitle()));
