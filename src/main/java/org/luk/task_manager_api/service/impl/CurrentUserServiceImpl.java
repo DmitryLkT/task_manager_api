@@ -1,13 +1,14 @@
 package org.luk.task_manager_api.service.impl;
 
-
+import org.luk.task_manager_api.exception.customExceptions.AccessDeniedException;
+import org.luk.task_manager_api.exception.customExceptions.UserNotAuthenticatedException;
+import org.luk.task_manager_api.exception.customExceptions.UserNotFoundException;
 import org.luk.task_manager_api.model.Project;
 import org.luk.task_manager_api.model.User;
 import org.luk.task_manager_api.repository.UserRepository;
 import org.luk.task_manager_api.service.CurrentUserService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
@@ -22,12 +23,12 @@ public class CurrentUserServiceImpl implements CurrentUserService {
     Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
     if(authentication == null || !authentication.isAuthenticated()) {
-        throw new RuntimeException("User not authenticated");
+        throw new UserNotAuthenticatedException();
       }
 
     String email = authentication.getName();
 
-    return userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    return userRepository.findByEmail(email).orElseThrow(() -> new UserNotFoundException(email));
   }
   
   @Override
@@ -40,7 +41,7 @@ public class CurrentUserServiceImpl implements CurrentUserService {
   @Override
   public void checkProjectOwnership(Project project, User user) {
     if(!project.getOwner().getId().equals(user.getId())) {
-      throw new RuntimeException("Access denied to project: " + project.getTitle());
+      throw new AccessDeniedException(String.format("Access denied to project: %s", project.getTitle()));
     }
   }
 }
