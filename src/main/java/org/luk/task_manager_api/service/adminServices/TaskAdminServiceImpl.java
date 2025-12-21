@@ -4,9 +4,13 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.luk.task_manager_api.dto.TaskResponse;
+import org.luk.task_manager_api.exception.customExceptions.ProjectNotFoundException;
+import org.luk.task_manager_api.exception.customExceptions.UserNotFoundException;
+import org.luk.task_manager_api.repository.ProjectRepository;
 import org.luk.task_manager_api.repository.TaskRepository;
-import org.luk.task_manager_api.service.CurrentUserService;
+import org.luk.task_manager_api.repository.UserRepository;
 import org.luk.task_manager_api.service.adminServices.interfaceService.TaskAdminService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,14 +19,14 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class TaskAdminServiceImpl implements TaskAdminService {
-  private final CurrentUserService currentUserService;
+  private final UserRepository userRepository;
+  private final ProjectRepository projectRepository;
   private final TaskRepository taskRepository;
 
   @Override
   @Transactional
+  @PreAuthorize("hasRole('ADMIN')")
   public List<TaskResponse> getAllTasks() {
-    checkAdminAccess();
-
     return taskRepository.findAll().stream()
             .map(t -> TaskResponse.fromEntity(t))
             .collect(Collectors.toList());
@@ -30,8 +34,11 @@ public class TaskAdminServiceImpl implements TaskAdminService {
 
   @Override
   @Transactional
+  @PreAuthorize("hasRole('ADMIN')")
   public List<TaskResponse> getTasksByProject(Long projectId) {
-    checkAdminAccess();
+    if(!projectRepository.existsById(projectId)) {
+      throw new ProjectNotFoundException(projectId);
+    }
 
     return taskRepository.findByProjectId(projectId).stream()
             .map(t -> TaskResponse.fromEntity(t))
@@ -40,17 +47,14 @@ public class TaskAdminServiceImpl implements TaskAdminService {
 
   @Override
   @Transactional
+  @PreAuthorize("hasRole('ADMIN')")
   public List<TaskResponse> getTasksByUser(Long userId) {
-    checkAdminAccess();
+    if(!!userRepository.existsById(userId)) {
+      throw new UserNotFoundException(userId);
+    }
 
     return taskRepository.findByUserId(userId).stream()
             .map(t -> TaskResponse.fromEntity(t))
             .collect(Collectors.toList());
-  }
-
-  private void checkAdminAccess() {
-        if (!currentUserService.isAdmin()) {
-      throw new RuntimeException("Admin role required");
-    }
   }
 }
