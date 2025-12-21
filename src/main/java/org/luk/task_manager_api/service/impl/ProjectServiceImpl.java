@@ -12,6 +12,7 @@ import org.luk.task_manager_api.model.User;
 import org.luk.task_manager_api.repository.ProjectRepository;
 import org.luk.task_manager_api.service.CurrentUserService;
 import org.luk.task_manager_api.service.ProjectService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,6 +26,7 @@ public class ProjectServiceImpl implements ProjectService {
 
   @Override
   @Transactional
+  @PreAuthorize("hasRole('USER')")
   public List<ProjectResponse> getAllProjectsFromUser() {
     User user = currentUserService.getCurrentUser();
 
@@ -37,6 +39,7 @@ public class ProjectServiceImpl implements ProjectService {
 
   @Override
   @Transactional
+  @PreAuthorize("hasRole('USER')")
   public ProjectResponse getProject(String title) {
     User user = currentUserService.getCurrentUser();
 
@@ -50,6 +53,7 @@ public class ProjectServiceImpl implements ProjectService {
 
   @Override
   @Transactional
+  @PreAuthorize("hasRole('USER')")
   public ProjectResponse createdProject(ProjectRequest request) {
     if(projectRepository.existsByTitle(request.getTitle())) {
       throw new ProjectAlreadyExistsException();
@@ -68,6 +72,7 @@ public class ProjectServiceImpl implements ProjectService {
 
   @Override
   @Transactional
+  @PreAuthorize("hasRole('USER')")
   public ProjectResponse updateProject(String title, ProjectRequest request) {
     User user = currentUserService.getCurrentUser();
     Project project = projectRepository.findByTitle(title)
@@ -94,6 +99,7 @@ public class ProjectServiceImpl implements ProjectService {
 
   @Override
   @Transactional
+  @PreAuthorize("hasRole('USER')")
   public void deleteProject(String title) {
     User user = currentUserService.getCurrentUser();
     Project project = projectRepository.findByTitle(title)

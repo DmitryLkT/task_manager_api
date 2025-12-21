@@ -15,6 +15,7 @@ import org.luk.task_manager_api.repository.ProjectRepository;
 import org.luk.task_manager_api.repository.TaskRepository;
 import org.luk.task_manager_api.service.CurrentUserService;
 import org.luk.task_manager_api.service.TaskService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +30,7 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   @Transactional
+  @PreAuthorize("hasRole('USER')")
   public List<TaskResponse> getAllTasksThisProject(String title) {
     Project project = getCurrentProject(title);
 
@@ -39,6 +41,7 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   @Transactional
+  @PreAuthorize("hasRole('USER')")
   public TaskResponse createdTask(String titleProject, TaskRequest request) {
     Project project = getCurrentProject(titleProject);
 
@@ -62,6 +65,7 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   @Transactional
+  @PreAuthorize("hasRole('USER')")
   public TaskResponse updateTask(Long id, TaskRequest request) {
     Task task = getCurrentTask(id);
 
@@ -79,6 +83,7 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   @Transactional
+  @PreAuthorize("hasRole('USER')")
   public void deleteTask(Long id) {
     Task task = getCurrentTask(id);
 
@@ -87,6 +92,7 @@ public class TaskServiceImpl implements TaskService {
 
   @Override
   @Transactional
+  @PreAuthorize("hasRole('USER')")
   public TaskResponse changeStatus(Long id, Status status) {
     Task task = getCurrentTask(id);
     task.setStatus(status);
