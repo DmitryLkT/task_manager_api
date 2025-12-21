@@ -101,4 +101,14 @@ public class GlobalExceptionHandler {
       LocalDateTime.now()
     );
   }
+
+  @ExceptionHandler(RoleNotFoundException.class)
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  public ApiError handlerRoleNotFound(RoleNotFoundException e) {
+    return new ApiError(
+      404,
+      e.getMessage(),
+      LocalDateTime.now()
+    );
+  }
 }
